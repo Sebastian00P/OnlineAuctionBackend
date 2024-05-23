@@ -58,7 +58,8 @@ namespace OnlineAuction.Auctions
             try
             {
                 var offerToRemove = ObjectMapper.Map<Offer>(input);
-                await _repository.DeleteAsync(offerToRemove);
+                offerToRemove.IsActive = false;
+                await _repository.UpdateAsync(offerToRemove);
             }
             catch (Exception ex)
             {
