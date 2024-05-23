@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace OnlineAuction.Auctions
 {
-    [AbpAuthorize(PermissionNames.Pages_Users)]
+    [AbpAuthorize(PermissionNames.Pages_Auction)]
     public class AuctionAppService : ApplicationService, IAuctionAppService
     {
         private readonly IRepository<Offer, long> _repository;
