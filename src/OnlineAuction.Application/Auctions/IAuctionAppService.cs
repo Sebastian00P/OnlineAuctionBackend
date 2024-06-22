@@ -10,9 +10,9 @@ namespace OnlineAuction.Auctions
     public interface IAuctionAppService : IApplicationService
     {
         Task CreateAsync(CreateOfferDto input);
-        Task DeleteAsync(EntityDto<long> input);
+        Task DeleteAsync(long input);
         Task<List<OfferDto>> GetAllAsync();
-        Task<OfferDto> GetAsync(EntityDto<long> input);
+        Task<OfferDto> GetAsync(long input);
         Task UpdateAsync(OfferDto offerDto);
     }
 }

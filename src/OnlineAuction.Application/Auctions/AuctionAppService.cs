@@ -32,7 +32,11 @@ namespace OnlineAuction.Auctions
         {
             try
             {
-                var offer = ObjectMapper.Map<Offer>(input);
+                var offer = new Offer();
+                offer.Description = input.Description;
+                offer.Price = input.Price;
+                offer.Title = input.Title;
+                offer.Photo = input.Photo;
                 offer.CreationTime = DateTime.Now;
                 offer.IsActive = true;
                 if (AbpSession.UserId != null)
@@ -53,11 +57,11 @@ namespace OnlineAuction.Auctions
         }
 
         [HttpDelete]
-        public async Task DeleteAsync(EntityDto<long> input)
+        public async Task DeleteAsync(long input)
         {
             try
             {
-                var offerToRemove = ObjectMapper.Map<Offer>(input);
+                var offerToRemove = _repository.FirstOrDefault(x => x.Id == input);
                 offerToRemove.IsActive = false;
                 await _repository.UpdateAsync(offerToRemove);
             }
@@ -71,8 +75,23 @@ namespace OnlineAuction.Auctions
         {
             try
             {
-                var offers = await _repository.GetAll().Where(x => x.IsActive).ToListAsync();
-                return new List<OfferDto>(ObjectMapper.Map<List<OfferDto>>(offers));
+                var offersdto = await _repository.GetAll().Where(x => x.IsActive).ToListAsync();
+                var offers = new List<OfferDto>();
+                foreach (var offer in offersdto)
+                {
+                    offers.Add(new OfferDto()
+                    {
+                        Photo = offer.Photo,
+                        CreationTime = offer.CreationTime,
+                        CreatorUserId = offer.CreatorUserId,
+                        Description = offer.Description,
+                        Id = offer.Id,
+                        IsActive = offer.IsActive,
+                        Price = offer.Price,
+                        Title = offer.Title
+                    });
+                }
+                return offers;
             }
             catch(Exception ex)
             {
@@ -81,12 +100,23 @@ namespace OnlineAuction.Auctions
         }
 
         [HttpGet]
-        public async Task<OfferDto> GetAsync(EntityDto<long> input)
+        public async Task<OfferDto> GetAsync(long input)
         {
             try
             {
-                var offer = await _repository.GetAsync(input.Id);
-                return ObjectMapper.Map<OfferDto>(offer);
+                var offer = await _repository.GetAsync(input);
+                var offerDto = new OfferDto()
+                {
+                    CreationTime = offer.CreationTime,
+                    CreatorUserId = offer.CreatorUserId,
+                    Title = offer.Title,
+                    Price = offer.Price,
+                    IsActive = offer.IsActive,
+                    Id = offer.Id,
+                    Description = offer.Description,
+                    Photo = offer.Photo
+                };
+                return offerDto;
             }
             catch (Exception ex)
             {
@@ -107,7 +137,15 @@ namespace OnlineAuction.Auctions
                     throw new Exception("User not logged");
                 }
                 var existingOffer = await _repository.GetAll().FirstOrDefaultAsync(o => o.Id == offerDto.Id);
-                ObjectMapper.Map(offerDto, existingOffer);
+                existingOffer.IsActive = offerDto.IsActive;
+                existingOffer.Description = offerDto.Description;
+                existingOffer.Price = offerDto.Price;
+                existingOffer.IsActive = offerDto.IsActive;
+                existingOffer.Photo = offerDto.Photo;
+                existingOffer.Title = offerDto.Title;
+                existingOffer.CreatorUserId = offerDto.CreatorUserId;
+                existingOffer.CreationTime = offerDto.CreationTime;
+
                 await _repository.UpdateAsync(existingOffer);
             }
             catch (Exception ex)
