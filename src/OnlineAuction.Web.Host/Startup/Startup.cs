@@ -17,6 +17,10 @@ using Abp.AspNetCore.SignalR.Hubs;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.IO;
+using Abp.EntityFrameworkCore;
+using OnlineAuction.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using OnlineAuction.Auctions;
 
 namespace OnlineAuction.Web.Host.Startup
 {
@@ -42,6 +46,13 @@ namespace OnlineAuction.Web.Host.Startup
             {
                 options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute());
             });
+
+            services.AddAbpDbContext<OnlineAuctionDbContext>(options =>
+            {
+                options.DbContextOptions.UseSqlServer(options.ConnectionString);
+            });
+
+            services.AddSingleton<AuctionAppService>();
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);

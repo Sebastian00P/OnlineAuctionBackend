@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineAuction.Auctions.Dto;
@@ -19,8 +20,7 @@ using System.Threading.Tasks;
 
 namespace OnlineAuction.Auctions
 {
-    [AbpAuthorize(PermissionNames.Pages_Auction)]
-    public class AuctionAppService : ApplicationService, IAuctionAppService
+    public class AuctionAppService : ApplicationService, IAuctionAppService, IDomainService
     {
         private readonly IRepository<Offer, long> _repository;
         public AuctionAppService(IRepository<Offer, long> repository)
@@ -67,7 +67,7 @@ namespace OnlineAuction.Auctions
             }
         }
         [HttpGet]    
-        public async Task<List<OfferDto>> GetAllAsync(long input)
+        public async Task<List<OfferDto>> GetAllAsync()
         {
             try
             {

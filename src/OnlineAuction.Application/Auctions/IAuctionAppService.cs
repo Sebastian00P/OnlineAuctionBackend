@@ -11,7 +11,7 @@ namespace OnlineAuction.Auctions
     {
         Task CreateAsync(CreateOfferDto input);
         Task DeleteAsync(EntityDto<long> input);
-        Task<List<OfferDto>> GetAllAsync(long input);
+        Task<List<OfferDto>> GetAllAsync();
         Task<OfferDto> GetAsync(EntityDto<long> input);
         Task UpdateAsync(OfferDto offerDto);
     }
