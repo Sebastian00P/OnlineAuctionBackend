@@ -11,7 +11,7 @@ namespace OnlineAuction.Offers
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
         public double Price { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsActive { get; set; }

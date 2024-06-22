@@ -18,7 +18,7 @@ namespace OnlineAuction.Auctions.Dto
         [Required]
         public string Description { get; set; }
         [Required]
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
         [Required]
         public double Price { get; set; }
         public DateTime CreationTime { get; set; }
