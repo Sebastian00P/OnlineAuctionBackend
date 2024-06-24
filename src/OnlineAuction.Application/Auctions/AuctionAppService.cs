@@ -136,15 +136,11 @@ namespace OnlineAuction.Auctions
                 {
                     throw new Exception("User not logged");
                 }
-                var existingOffer = await _repository.GetAll().FirstOrDefaultAsync(o => o.Id == offerDto.Id);
-                existingOffer.IsActive = offerDto.IsActive;
+                var existingOffer = await _repository.GetAll().FirstOrDefaultAsync(o => o.Id == offerDto.Id);            
                 existingOffer.Description = offerDto.Description;
-                existingOffer.Price = offerDto.Price;
-                existingOffer.IsActive = offerDto.IsActive;
+                existingOffer.Price = offerDto.Price;               
                 existingOffer.Photo = offerDto.Photo;
-                existingOffer.Title = offerDto.Title;
-                existingOffer.CreatorUserId = offerDto.CreatorUserId;
-                existingOffer.CreationTime = offerDto.CreationTime;
+                existingOffer.Title = offerDto.Title;              
 
                 await _repository.UpdateAsync(existingOffer);
             }
